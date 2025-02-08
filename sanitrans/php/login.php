@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     <div class="card p-4">
     <div class="logo">
-    <img src="\img\LogoSanitrans2.png" alt="Logo Sanitrans" width="200" height="141"/>
+    <img src="C:\Users\macar\Documents\Proyecto_DAW\Proyecto-Sanitrans\sanitrans\img\LogoSanitrans2.png" alt="Logo Sanitrans" width="200" height="141"/>
     </div>
     <img src="\img\Sanitrans.png" alt="Texto Sanitrans" width="200" height="141"/>
         <h3 class="text-center">Iniciar Sesión</h3>
