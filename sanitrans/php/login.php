@@ -31,19 +31,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sanitrans</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+
 <body class="d-flex justify-content-center align-items-center vh-100">
-    
+
     <div class="card p-4">
-    <div class="logo">
-    <img src="C:\Users\macar\Documents\Proyecto_DAW\Proyecto-Sanitrans\sanitrans\img\LogoSanitrans2.png" alt="Logo Sanitrans" width="200" height="141"/>
-    </div>
-    <img src="\img\Sanitrans.png" alt="Texto Sanitrans" width="200" height="141"/>
+        <div class="logo">
+            <img src="\sanitrans\img\LogoSanitrans2.png" alt="Logo Sanitrans" width="200" height="141" />
+        </div>
+        <img src="\sanitrans\img\Sanitrans.png" alt="Texto Sanitrans" width="200" height="141" />
         <h3 class="text-center">Iniciar Sesión</h3>
         <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
         <form method="POST">
@@ -59,4 +61,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 </body>
+
 </html>
