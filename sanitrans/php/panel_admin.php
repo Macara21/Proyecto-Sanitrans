@@ -5,7 +5,7 @@ if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== 'admin') {
     exit();
 }
 
-require 'db.php';
+require 'controller.php';
 
 $usuario_id = $_SESSION["usuario_id"];
 $nombre = $_SESSION["nombre"];
@@ -22,8 +22,8 @@ $nombre = $_SESSION["nombre"];
 </head>
 <body>
 <div class="container mt-5">
-        <h1>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h1>
-        <p>Rol: Administrador</p>
+        <h1>Bienvenido/a, <?php echo htmlspecialchars($nombre); ?></h1>
+        <p>Rol: Administrador/a</p>
 </div>
     
 </body>

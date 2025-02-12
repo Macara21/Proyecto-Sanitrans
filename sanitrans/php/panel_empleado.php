@@ -1,11 +1,11 @@
 <?php
 session_start();
+require 'controller.php';
+
 if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== 'empleado') {
     header("Location: login.php");
     exit();
 }
-
-require 'db.php';
 
 $usuario_id = $_SESSION["usuario_id"];
 $nombre = $_SESSION["nombre"];
@@ -21,8 +21,8 @@ $nombre = $_SESSION["nombre"];
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h1>
-        <p>Rol: Empleado</p>
+        <h1>Bienvenido/a, <?php echo htmlspecialchars($nombre); ?></h1>
+        <p>Rol: Empleado/a</p>
 
         <!-- Formulario para iniciar turno -->
         <div class="card mb-4">

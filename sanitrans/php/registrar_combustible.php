@@ -1,18 +1,16 @@
 <?php
 session_start();
+require 'controller.php';
+
 if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== 'empleado') {
     header("Location: login.php");
     exit();
 }
 
-require 'db.php';
-
 $empleado_id = $_SESSION["usuario_id"];
 
-// Obtener el ID del turno actual del empleado
-$stmt = $pdo->prepare("SELECT id FROM turnos WHERE empleado_id = :empleado_id AND fin_turno IS NULL");
-$stmt->execute(['empleado_id' => $empleado_id]);
-$turno = $stmt->fetch();
+// Obtener el turno activo del empleado
+$turno = obtenerTurnoActivo($empleado_id);
 
 if (!$turno) {
     echo "No tienes un turno activo.";
@@ -23,19 +21,13 @@ if (!$turno) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $litros = $_POST['litros'];
     $coste = $_POST['coste'];
-    $fecha_repostaje = date('Y-m-d H:i:s'); // Fecha y hora actual
 
-    // Insertar el registro de combustible
-    $stmt = $pdo->prepare("INSERT INTO combustible (turno_id, litros, coste, fecha) VALUES (:turno_id, :litros, :coste, :fecha)");
-    $stmt->execute([
-        'turno_id' => $turno['id'],
-        'litros' => $litros,
-        'coste' => $coste,
-        'fecha' => $fecha_repostaje
-    ]);
-
-    header("Location: panel_empleado.php"); // Redirigir al panel
-    exit();
+    if (registrarCombustible($turno['id'], $litros, $coste)) {
+        header("Location: panel_empleado.php"); // Redirigir al panel
+        exit();
+    } else {
+        echo "Error al registrar el combustible.";
+    }
 }
 ?>
 

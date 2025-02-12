@@ -5,7 +5,7 @@ if (!isset($_SESSION["usuario_id"])) {
     exit();
 }
 
-require 'db.php';
+require 'controller.php';
 
 $rol = $_SESSION["rol"];
 

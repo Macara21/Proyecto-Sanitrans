@@ -1,18 +1,16 @@
 <?php
 session_start();
+require 'controller.php';
+
 if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== 'empleado') {
     header("Location: login.php");
     exit();
 }
 
-require 'db.php';
-
 $empleado_id = $_SESSION["usuario_id"];
 
-// Obtener el ID del turno actual del empleado
-$stmt = $pdo->prepare("SELECT id FROM turnos WHERE empleado_id = :empleado_id AND fin_turno IS NULL");
-$stmt->execute(['empleado_id' => $empleado_id]);
-$turno = $stmt->fetch();
+// Obtener el turno activo del empleado
+$turno = obtenerTurnoActivo($empleado_id);
 
 if (!$turno) {
     echo "No tienes un turno activo.";
@@ -22,18 +20,13 @@ if (!$turno) {
 // Procesar el formulario de incidencia
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $descripcion = $_POST['descripcion'];
-    $fecha_incidencia = date('Y-m-d H:i:s'); // Fecha y hora actual
 
-    // Insertar la incidencia
-    $stmt = $pdo->prepare("INSERT INTO incidencias (turno_id, descripcion, fecha) VALUES (:turno_id, :descripcion, :fecha)");
-    $stmt->execute([
-        'turno_id' => $turno['id'],
-        'descripcion' => $descripcion,
-        'fecha' => $fecha_incidencia
-    ]);
-
-    header("Location: panel_empleado.php"); // Redirigir al panel
-    exit();
+    if (registrarIncidencia($turno['id'], $descripcion)) {
+        header("Location: panel_empleado.php"); // Redirigir al panel
+        exit();
+    } else {
+        echo "Error al registrar la incidencia.";
+    }
 }
 ?>
 
