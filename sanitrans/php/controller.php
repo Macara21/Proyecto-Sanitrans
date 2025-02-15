@@ -5,7 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Función para conectar a la base de datos
-function conectarDB() {
+function conectarDB()
+{
     $host = "localhost";
     $usuario = "root";  // Cambia esto si tienes un usuario distinto
     $password = "";     // Pon la contraseña si la has configurado en XAMPP
@@ -21,7 +22,8 @@ function conectarDB() {
 }
 
 // Función para buscar un usuario por email
-function buscarUsuarioPorEmail($email) {
+function buscarUsuarioPorEmail($email)
+{
     $pdo = conectarDB();
     $stmt = $pdo->prepare("SELECT id, nombre, pswd, rol FROM empleados WHERE email = ?");
     $stmt->execute([$email]);
@@ -29,7 +31,8 @@ function buscarUsuarioPorEmail($email) {
 }
 
 // Función para verificar las credenciales del usuario
-function verificarCredenciales($email, $password) {
+function verificarCredenciales($email, $password)
+{
     $usuario = buscarUsuarioPorEmail($email);
     if ($usuario && password_verify($password, $usuario["pswd"])) {
         return $usuario;
@@ -38,7 +41,8 @@ function verificarCredenciales($email, $password) {
 }
 
 // Función para iniciar un turno
-function iniciarTurno($empleado_id, $matricula) {
+function iniciarTurno($empleado_id, $matricula)
+{
     $pdo = conectarDB();
 
     // Verificar si la ambulancia existe
@@ -63,7 +67,8 @@ function iniciarTurno($empleado_id, $matricula) {
 }
 
 // Función para registrar combustible
-function registrarCombustible($turno_id, $litros, $coste) {
+function registrarCombustible($turno_id, $litros, $coste)
+{
     $pdo = conectarDB();
     $fecha_repostaje = date('Y-m-d H:i:s'); // Fecha y hora actual
 
@@ -79,7 +84,8 @@ function registrarCombustible($turno_id, $litros, $coste) {
 }
 
 // Función para registrar una incidencia
-function registrarIncidencia($turno_id, $descripcion) {
+function registrarIncidencia($turno_id, $descripcion)
+{
     $pdo = conectarDB();
     $fecha_incidencia = date('Y-m-d H:i:s'); // Fecha y hora actual
 
@@ -94,15 +100,25 @@ function registrarIncidencia($turno_id, $descripcion) {
 }
 
 // Función para obtener el turno activo de un empleado
-function obtenerTurnoActivo($empleado_id) {
+function obtenerTurnoActivo($empleado_id)
+{
     $pdo = conectarDB();
     $stmt = $pdo->prepare("SELECT id FROM turnos WHERE empleado_id = :empleado_id AND fin_turno IS NULL");
     $stmt->execute(['empleado_id' => $empleado_id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+//función para verificar si el empleado ya tiene un turno activo
+function tieneTurnoActivo($empleado_id) {
+    $pdo = conectarDB();
+    $stmt = $pdo->prepare("SELECT id FROM turnos WHERE empleado_id = :empleado_id AND fin_turno IS NULL");
+    $stmt->execute(['empleado_id' => $empleado_id]);
+    return $stmt->fetch() !== false;
+}
+
 // Función para cerrar sesión y registrar el fin de turno
-function cerrarSesion($empleado_id) {
+function cerrarSesion($empleado_id)
+{
     $pdo = conectarDB();
     $fin_turno = date('Y-m-d H:i:s'); // Fecha y hora actual
 
@@ -113,6 +129,34 @@ function cerrarSesion($empleado_id) {
     ]);
 
     session_destroy(); // Destruir la sesión
-    return true;
+    return true; //Cierre de sesión exitoso
 }
-?>
+
+function registrarChecklist($datos) {
+    $pdo = conectarDB();
+
+    $stmt = $pdo->prepare("
+        INSERT INTO checklist (
+            turno_id, ruedas, aceite, anticongelante, golpes_exteriores, luces, sirena, limpieza, camilla, ferulas, ambu, desfibrilador, camilla_pala, tablero_espinal, collarines, guedels, sueros, silla_evacuacion, extintor
+        ) VALUES (
+            :turno_id, :ruedas, :aceite, :anticongelante, :golpes_exteriores, :luces, :sirena, :limpieza, :camilla, :ferulas, :ambu, :desfibrilador, :camilla_pala, :tablero_espinal, :collarines, :guedels, :sueros, :silla_evacuacion, :extintor
+        )
+    ");
+
+    return $stmt->execute($datos);
+}
+
+//Ya se realizó un checkList
+function tieneChecklist($turno_id) {
+    $pdo = conectarDB();
+    $stmt = $pdo->prepare("SELECT id FROM checklist WHERE turno_id = :turno_id");
+    $stmt->execute(['turno_id' => $turno_id]);
+    return $stmt->fetch() !== false;
+}
+
+// Función para obtener la matricula
+function obtenerMatriculasDisponibles() {
+    $pdo = conectarDB();
+    $stmt = $pdo->query("SELECT matricula FROM ambulancias WHERE estado = 'Operativa'");
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
