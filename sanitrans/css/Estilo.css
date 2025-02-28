@@ -1,0 +1,34 @@
+body 
+{
+    background-color: #b3e0ef ;
+}
+header {
+    background-color: #24809F;
+    color: white;
+    align-content:center;
+}
+
+#calendario{
+    background-color: white ;
+    padding: 5px;
+    border-radius: 5px;
+
+}
+
+.fc-event {
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 4px;
+    white-space: normal; /* Permite que el texto se divida en varias líneas */
+    overflow: visible; /* Permite que el contenido se desborde */
+}
+.fc-event-title {
+    font-weight: bold;
+}
+.fc-event-time {
+    font-size: 0.9em;
+}
+.fc-event-descripcion {
+    font-size: 0.8em;
+    margin-top: 3px;
+}

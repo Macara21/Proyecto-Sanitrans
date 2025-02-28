@@ -34,12 +34,21 @@ $checklist_registrado = isset($_GET['checklist_registrado']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Empleado - Sanitrans</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/sanitrans\css\Estilo.css">
 </head>
 
 <body>
+    <header class="container h-25 mw-100 p-3">
+        <h1 class="m-2">Plataforma web transporte sanitario</h1>
+    </header>
     <div class="container mt-5">
-        <h1>Bienvenido, <?php echo htmlspecialchars($nombre); ?></h1>
+        <h1>Bienvenido/a, <?php echo htmlspecialchars($nombre); ?></h1>
         <p>Rol: Empleado</p>
+
+        <!-- Mostrar mensaje si registro correcto -->
+        <?php if (isset($_GET['parte_registrado'])): ?>
+            <div class="alert alert-success">Parte registrado correctamente</div>
+        <?php endif; ?>
 
         <!-- Mostrar mensaje de error si hay un turno activo -->
         <?php if ($error_turno_activo): ?>
@@ -75,6 +84,16 @@ $checklist_registrado = isset($_GET['checklist_registrado']);
         <div class="card mb-4">
             <div class="card-body">
                 <h2>Opciones</h2>
+
+                <!-- Botón para ver el calendario de turnos -->
+                <a href="calendario_empleado.php" class="btn btn-info mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-week" viewBox="0 0 16 16">
+                        <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                    </svg>
+                    &nbsp;Calendario de Turnos
+                </a>
+
                 <a href="registrar_combustible.php" class="btn btn-secondary mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fuel-pump" viewBox="0 0 16 16">
                         <path d="M3 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5z" />
                         <path d="M1 2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v8a2 2 0 0 1 2 2v.5a.5.5 0 0 0 1 0V8h-.5a.5.5 0 0 1-.5-.5V4.375a.5.5 0 0 1 .5-.5h1.495c-.011-.476-.053-.894-.201-1.222a.97.97 0 0 0-.394-.458c-.184-.11-.464-.195-.9-.195a.5.5 0 0 1 0-1q.846-.002 1.412.336c.383.228.634.551.794.907.295.655.294 1.465.294 2.081v3.175a.5.5 0 0 1-.5.501H15v4.5a1.5 1.5 0 0 1-3 0V12a1 1 0 0 0-1-1v4h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1zm9 0a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v13h8z" />
@@ -85,12 +104,21 @@ $checklist_registrado = isset($_GET['checklist_registrado']);
                     </svg>&nbsp;Registrar Incidencia</a>
 
                 <?php $turno_activo = obtenerTurnoActivo($empleado_id);
+
                 if ($turno_activo && !tieneChecklist($turno_activo['id'])): ?>
                     <a href="checklist.php" class="btn btn-secondary mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toggles" viewBox="0 0 16 16">
                             <path d="M4.5 9a3.5 3.5 0 1 0 0 7h7a3.5 3.5 0 1 0 0-7zm7 6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m-7-14a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5m2.45 0A3.5 3.5 0 0 1 8 3.5 3.5 3.5 0 0 1 6.95 6h4.55a2.5 2.5 0 0 0 0-5zM4.5 0h7a3.5 3.5 0 1 1 0 7h-7a3.5 3.5 0 1 1 0-7" />
                         </svg>&nbsp;Realizar Checklist</a>
                 <?php endif; ?>
-                <a href="logout.php" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+
+                <?php if ($turno_activo): ?>
+
+                    <a href="parte_asistencia.php" class="btn btn-primary w-60 mb-2">
+                        Parte de Asistencia
+                    </a>
+                <?php endif; ?>
+
+                <a href="logout.php" class="btn btn-danger mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
                         <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
                     </svg>&nbsp;Cerrar Sesión</a>
@@ -100,9 +128,6 @@ $checklist_registrado = isset($_GET['checklist_registrado']);
 
     <!-- Archivo JavaScript alert/turno -->
     <script src="../js/scripts.js"></script>
-</body>
-
-</html>
 </body>
 
 </html>
