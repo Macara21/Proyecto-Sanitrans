@@ -5,11 +5,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $matricula = $_POST['matricula'];
     $tipo = $_POST['tipo'];
     $estado = $_POST['estado'];
+    $kilometros = $_POST['kilometros'];
 
-    if (crearAmbulancia($matricula, $tipo, $estado)) {
-        header("Location: gestion_ambulancias.php");
+    if (crearAmbulancia($matricula, $tipo, $estado, $kilometros)) {
+        echo "<script>alert('Alta de ambulancia correcta.'); window.location.href = 'gestion_ambulancias.php';</script>";
     } else {
-        echo "Error al crear la ambulancia.";
+        echo "<script>alert('Error al crear la ambulancia.');</script>";
     }
 }
 ?>
@@ -22,13 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Nueva Ambulancia</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/sanitrans\css\Estilo.css">
-
+    <link rel="stylesheet" href="\sanitrans\css\Estilo.css">
 </head>
 
 <body>
-    <header class="container h-25 mw-100 p-3">
-        <h1 class="m-2">Plataforma web transporte sanitario</h1>
+    <header>
+        Plataforma web de transporte sanitario
     </header>
 
     <div class="container mt-5">
@@ -54,6 +54,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="Fuera de servicio">Fuera de servicio</option>
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="kilometros" class="form-label">Kilómetros</label>
+                <input type="number" class="form-control" id="kilometros" name="kilometros" required>
+            </div>
             <button type="submit" class="btn btn-primary mb-3">Alta Ambulancia</button>
             <a href="gestion_ambulancias.php" class="btn btn-secondary mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -62,8 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Volver a gestión
             </a>
         </form>
-
     </div>
+    <footer>
+        Proyecto desarrollo de aplicaciones web<br>
+        Mario Carmona Ramos
+    </footer>
 </body>
 
 </html>

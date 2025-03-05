@@ -6,11 +6,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $matricula = $_POST['matricula'];
     $tipo = $_POST['tipo'];
     $estado = $_POST['estado'];
+    $kilometros = $_POST['kilometros'];
 
-    if (actualizarAmbulancia($id, $matricula, $tipo, $estado)) {
-        header("Location: gestion_ambulancias.php");
+    if (actualizarAmbulancia($id, $matricula, $tipo, $estado, $kilometros)) {
+        echo "<script>alert('Cambios guardados correctamente.'); window.location.href = 'gestion_ambulancias.php';</script>";
     } else {
-        echo "Error al actualizar la ambulancia.";
+        echo "<script>alert('Error al actualizar la ambulancia.');</script>";
     }
 }
 
@@ -27,7 +28,6 @@ $ambulancia = obtenerAmbulanciaPorId($id);
     <title>Editar Ambulancia</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/sanitrans\css\Estilo.css">
-
 </head>
 
 <body>
@@ -59,6 +59,10 @@ $ambulancia = obtenerAmbulanciaPorId($id);
                     <option value="Fuera de servicio" <?php echo ($ambulancia['estado'] == 'Fuera de servicio') ? 'selected' : ''; ?>>Fuera de servicio</option>
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="kilometros" class="form-label">Kilómetros</label>
+                <input type="number" class="form-control" id="kilometros" name="kilometros" value="<?php echo $ambulancia['kilometros']; ?>" required>
+            </div>
             <button type="submit" class="btn btn-primary mb-3">Guardar Cambios</button>
             <a href="gestion_ambulancias.php" class="btn btn-secondary mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -68,6 +72,10 @@ $ambulancia = obtenerAmbulanciaPorId($id);
             </a>
         </form>
     </div>
+    <footer>
+        Proyecto desarrollo de aplicaciones web<br>
+        Mario Carmona Ramos
+    </footer>
 </body>
 
 </html>

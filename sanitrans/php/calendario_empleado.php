@@ -3,7 +3,7 @@ session_start();
 require 'controller.php';
 
 if (!isset($_SESSION["usuario_id"]) || $_SESSION["rol"] !== 'empleado') {
-    header("Location: login.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -37,8 +37,8 @@ $turnos = obtenerTurnosProgramados($empleado_id);
 
 <body>
 
-    <header class="container h-25 mw-100 p-3">
-        <h1 class="m-2">Plataforma web transporte sanitario</h1>
+    <header>
+        Plataforma web de transporte sanitario
     </header>
 
     <div class="container mt-5">
@@ -49,7 +49,7 @@ $turnos = obtenerTurnosProgramados($empleado_id);
                 </svg>&nbsp;Volver al Panel</a>
         </div>
         <div id="calendario"></div>
-        
+
     </div>
 
     <!-- Scripts de FullCalendar -->
@@ -111,6 +111,10 @@ $turnos = obtenerTurnosProgramados($empleado_id);
             calendar.render();
         });
     </script>
+    <footer>
+        Proyecto desarrollo de aplicaciones web<br>
+        Mario Carmona Ramos
+    </footer>
 </body>
 
 </html>
